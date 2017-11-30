@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style type="text/css">
+div{
+	border:0px solid red;
+}
+#big{
+	width:800px;
+	height:600px;
+	background-color:black;
+	margin:auto;
+	background:url(images/back.png);
+}
+#score{
+	position:relative;
+	float:left;
+	width:200px;
+	height:50px;	
+	background:url(images/%E4%BA%91.png);
+	background-repeat:no-repeat;
+}
+#scotext{
+	border:0px solid red;
+	position:relative;
+	width:20px;
+	top:12px;
+	left:30px;
+	font-weight:bold;
+}
+#start{
+	position:relative;
+	float:left;
+	width:196px;
+	height:50px;
+	background:url(images/%E5%BC%80%E5%A7%8B%E6%B8%B8%E6%88%8F.PNG);
+	background-repeat:no-repeat;
+	cursor:pointer;
+}
+#end{
+	position:relative;
+	float:left;
+	width:196px;
+	height:50px;
+	background:url(images/%E9%80%80%E5%87%BA%E6%B8%B8%E6%88%8F.PNG);
+	background-repeat:no-repeat;
+}
+#time{
+	position:relative;
+	float:left;
+	width:200px;
+	height:50px;
+}
+#loadbar{
+	position:relative;
+    width:180px;
+    background-color:white;
+    border:0px solid black;    
+	height:20px;
+	top:12px;
+	left:6px;
+	font-weight:bold;
+	font-size:8px;
+	color:#E60012;
+}
+#bar{
+    display:block;
+    font-size:12px;
+    background-color:#638CC8;  
+	width:180px; 
+	height:20px;
+}
+#game{
+	clear:both;
+	border:0px solid blue;
+	width:798px;
+	height:495px;
+}
+#board{
+	position:relative;
+	border:0px solid yellow;
+	width:70px;
+	height:90px;
+	top:375px;
+	background:url(images/p1.png);
+}
+#div0{
+	position:relative;
+	border:0px solid red; 
+	width:30px;
+	height:30px; 
+	background:url(images/%E8%98%91%E8%8F%871.png);
+	background-repeat:no-repeat;
+}
+</style>
+</head>
+
+<body>
+	<div id="big">
+    	<div id="score"><div id="scotext">0</div></div>
+        <div id="start"></div>
+    	<a href="游戏结束.html"><div id="end"></div></a>
+        <div id="time">
+        	<div id="loadbar">
+        		<div id="bar"></div>
+			</div>
+        </div>
+        <div id="game">
+        	<div id="div0"></div>
+        	<div id="board"></div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+	document.getElementById('start').onclick = function(){
+		//倒计时
+		var i=0;
+    	function startbar(){
+    		showbar=setInterval(setbar,1000);    
+    	}
+    	function setbar(){
+        	i+=1;
+        	if(i>=20){
+           		clearInterval(showbar); 
+				if(scoretext.innerHTML<8){
+				window.location.href = '游戏结束.html';
+				}
+				else{
+				window.location.href = '过关界面.html';
+				}
+			}
+        	document.getElementById("bar").style.width=i*5+"%";
+			document.getElementById("bar").innerHTML=20-i+"s";
+    	}
+		startbar();
+		
+		
+		//马里奥
+		document.getElementById('board').style.left='0px';
+		document.getElementById('board').style.top='382px';
+		var person=document.getElementById('board');
+		document.onkeydown=function(){		  		
+	  			//alert('ok'+event.keyCode);
+	  			if(event.keyCode == 39 && parseInt(person.style.left)<710){
+						person.style.left=parseInt(person.style.left)+40+'px';
+				}
+				else if(event.keyCode == 37&& parseInt(person.style.left)>0){
+					person.style.left=parseInt(person.style.left)-40+'px';
+				}
+	  		};
+		
+		//蘑菇
+		window.setInterval(divMove,10);
+			var a=1,b=1;
+			var scoretext = document.getElementById('scotext');	
+			document.getElementById('div0').style.left='0px';
+	    	document.getElementById('div0').style.top='0px';
+	    	document.getElementById('div0').style.width='30px';
+	    	document.getElementById('div0').style.height='30px';
+
+			
+			function divMove(){
+				var left = Math.floor((Math.random()*800));
+				var ball=document.getElementById('div0');
+		    	if(a==1){
+		    		if(parseInt(ball.style.top)<495){
+					ball.style.top=parseInt(ball.style.top)+2+'px';
+					}
+		  			else a=2;
+            	}
+				if(a==2){
+		    		if(parseInt(ball.style.top)>0){
+			        document.getElementById('div0').style.left=parseInt(left)+'px';
+	    	        document.getElementById('div0').style.top='0px';
+		  			}
+		  			else a=1;
+		  		}
+		    	if(b==1){
+		    		if(parseInt(ball.style.left)<780){
+					ball.style.left=parseInt(ball.style.left)+2+'px';
+					}
+		  			else b=2;
+            	}
+				if(b==2){
+		    		if(parseInt(ball.style.left)>0){
+					ball.style.left=parseInt(ball.style.left)-2+'px';
+		  			}
+		  			else b=1;
+		  		}
+				if(parseInt(ball.style.top)==parseInt(person.style.top)){
+					if(parseInt(ball.style.left)+20>parseInt(person.style.left)&&parseInt(ball.style.left)<parseInt(person.style.left)+70){
+						scoretext.innerHTML=parseInt(scoretext.innerHTML)+1;
+						a=2;
+					}
+				}
+			}
+	}; 
+	</script>
+</body>
+</html>
